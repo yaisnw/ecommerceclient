@@ -1,0 +1,11 @@
+.form {
+    margin-top: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    grid-template-columns: 15%;
+}
+.submit {
+    margin-top: 15px;
+    padding: 5px 15px;
+}

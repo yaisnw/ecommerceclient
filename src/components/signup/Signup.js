@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import "./Signup.css"
 import { Link, useNavigate } from 'react-router-dom'
 import {
@@ -20,10 +20,16 @@ function Signup() {
   const username = useSelector(selectUsername)
   const isSignedup = useSelector(selectisSignedup)
   const isLoading = useSelector(selectisLoading)
-  const hasError = useSelector(selecthasError)
   const error = useSelector(selectError)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+
+  useEffect(() => {
+    if (isSignedup) {
+      navigate("/login");
+    }
+  }, [isSignedup, navigate]);
 
   const handleUsername = (e) => {
     dispatch(addUsername(e.target.value))
@@ -32,24 +38,27 @@ function Signup() {
     dispatch(addPassword(e.target.value))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      dispatch(signup({ username, password }));
+      await dispatch(signup({ username, password }));
+
+
     } catch (error) {
       console.error('Signup failed:', error);
       dispatch(setError(error.message));
     }
-    if (isSignedup) {
-      navigate("/login")
-    }
+
+
   };
   // console.log(password)
   return (
     <div className='formBox'>
       <form className="form" onSubmit={handleSubmit}>
-        {error && <p>{error}</p>}
-        {isLoading && <p>Loading</p>}
+        <div className="http">
+          {error && <p>{error}</p>}
+          {isLoading && <p>Loading</p>}
+        </div>
 
         <label>Username</label>
         <input value={username} onChange={handleUsername} type="text" />

@@ -1,10 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
-import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route, useNavigate } from 'react-router-dom';
 import Signup from './components/signup/Signup';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { store } from './Store';
 import Login from './components/signup/Login';
+
 
 
 
@@ -16,6 +17,7 @@ const router = createBrowserRouter(createRoutesFromElements(
 ))
 
 function App() {
+
   return (
     <Provider store={store}>
       <RouterProvider router={router} />

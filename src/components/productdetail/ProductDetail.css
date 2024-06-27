@@ -1,0 +1,37 @@
+.detailFlex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 50px;
+    margin-top: 300px;
+}
+.img {
+    width: 200px;
+    height: auto;
+}
+form input {
+    text-align: center;
+}
+.cartFlex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 20px;
+    border: 3px black solid;
+    max-width: 200px;
+    margin: 0 auto;
+}
+.cartNotification {
+
+}
+.cross {
+    width: 25px;
+    height: 25px;
+}
+.cross:hover {
+    cursor: pointer;
+}
+
+.cart:hover{
+    cursor: pointer;
+}

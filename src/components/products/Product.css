@@ -1,0 +1,21 @@
+.product {
+    width: 100px;
+}
+.productFlex {
+    cursor: pointer;
+    max-width: 700px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border-top: 4px solid black;
+    border-bottom: 4px solid black;
+    margin-bottom: 10px;
+}
+.productsGrid {
+    display: grid;
+    justify-content: center;
+    column-gap: 50px;
+    grid-template-columns: 500px 500px;
+}

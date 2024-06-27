@@ -1,0 +1,46 @@
+.cart {
+    height: 50px;
+    width: 50px;
+}
+
+.navbar>div>a {
+    text-decoration: none;
+    color: white;
+}
+
+.home {
+    font-size: 30px;
+    padding: 5px 10px;
+    color: white;
+    background-color: black;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.home:hover {
+    color: black;
+    background-color: white;
+}
+
+.signout {
+    padding: 50px 10px;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+}
+
+.signout:hover {
+    color: red;
+    background-color: white;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 30px;
+    height: 50px;
+    background-color: #000000;
+}
+
+.navbar>div {
+    display: flex;
+    align-items: center;
+    column-gap: 40px;
+}

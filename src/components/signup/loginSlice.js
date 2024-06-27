@@ -1,40 +1,64 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
-
+import { PURGE } from 'redux-persist';
+// export const loginCall = createAsyncThunk(
+//     'login/call',
+//     async ({ username, password }) => {
+//         try {
+//             const response = await axios.post("http://localhost:4000/login", {
+//                 username: username,
+//                 password: password
+//             })
+//             return response.data
+//         }
+//         catch (e) {
+//             if (e.response.status === 404) {
+//                 throw new Error("user not found")
+//             }
+//             else if (e.response.status === 401) {
+//                 throw new Error("incorrect password")
+//             }
+//             throw e
+//         }
+//     }
+// )
 export const loginCall = createAsyncThunk(
     'login/call',
-    async ({ username, password }) => {
+    async ({ username, password }, thunkAPI) => {
+        console.log('Thunk started');
         try {
             const response = await axios.post("http://localhost:4000/login", {
-                username: username,
-                password: password
-            })
-            return response.data
-        }
-        catch (e) {
+                username,
+                password
+            });
+            console.log('Thunk successful');
+            return response.data;
+        } catch (e) {
+            console.log('Thunk failed');
             if (e.response.status === 404) {
-                throw new Error("user not found")
+                throw new Error("User not found");
+            } else if (e.response.status === 401) {
+                throw new Error("Incorrect password");
             }
-            else if (e.response.status === 401) {
-                throw new Error("incorrect password")
-            }
-            throw e
+            throw e;
         }
     }
-)
+);
 
+
+const initialState = {
+    username: "",
+    password: "",
+    token: "",
+    error: "",
+    isLoading: false,
+    hasError: false,
+};
 
 
 export const loginSlice = createSlice({
     name: "login",
-    initialState: {
-        username: "",
-        password: "",
-        error: "",
-        isLoading: false,
-        hasError: false,
-        isLoggedin: false
-    },
+    initialState,
     reducers: {
         addUsername: (state, action) => {
             state.username = action.payload;
@@ -44,7 +68,15 @@ export const loginSlice = createSlice({
         },
         setError: (state, action) => {
             state.error = action.payload;
-        }
+        },
+        setisLoggedin: (state, action) => {
+            state.isLoggedin = true
+        },
+        logout: state => {
+            state.token = '';
+            state.isLoggedin = false;
+            state.expirationTime = null;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(
@@ -63,15 +95,21 @@ export const loginSlice = createSlice({
             .addCase(
                 loginCall.fulfilled, (state, action) => {
                     state.isLoggedin = true;
+                    state.token = action.payload;
                     state.isLoading = false;
                     state.hasError = false;
                 }
-            ) 
+            )
+            .addCase(PURGE, (state) => {
+                return initialState;
+            });
+
     }
 })
 
 export const selectUsername = (state) => state.login.username;
 export const selectPassword = (state) => state.login.password;
+export const selectToken = (state) => state.login.token;
 export const selectisLoggedin = (state) => state.login.isLoggedin;
 export const selectisLoading = (state) => state.login.isLoading;
 export const selectError = (state) => state.login.error;
@@ -79,7 +117,8 @@ export const selectError = (state) => state.login.error;
 export const {
     addUsername,
     addPassword,
-    setError
+    setError,
+    setisLoggedin
 } = loginSlice.actions
 
 export default loginSlice.reducer;

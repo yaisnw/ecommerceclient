@@ -1,0 +1,28 @@
+.cartGrid {
+    display: grid;
+    grid-template-columns: 40% 40%;
+    gap: 20px;
+    flex-grow: 1;
+}
+.checkout {
+    margin: 50px 40px;
+}
+.order {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    transition: background-color 0.4s ease-in-out,
+}
+.order:hover {
+
+    background-color: rgb(255, 200, 98);
+}
+.noCart {
+    margin: 50px 40px;
+}
+.noCart > a {
+    text-decoration: none;
+    color: red;
+}

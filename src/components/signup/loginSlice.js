@@ -1,27 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
 import { PURGE } from 'redux-persist';
-// export const loginCall = createAsyncThunk(
-//     'login/call',
-//     async ({ username, password }) => {
-//         try {
-//             const response = await axios.post("http://localhost:4000/login", {
-//                 username: username,
-//                 password: password
-//             })
-//             return response.data
-//         }
-//         catch (e) {
-//             if (e.response.status === 404) {
-//                 throw new Error("user not found")
-//             }
-//             else if (e.response.status === 401) {
-//                 throw new Error("incorrect password")
-//             }
-//             throw e
-//         }
-//     }
-// )
+
 export const loginCall = createAsyncThunk(
     'login/call',
     async ({ username, password }, thunkAPI) => {
@@ -35,9 +15,9 @@ export const loginCall = createAsyncThunk(
             return response.data;
         } catch (e) {
             console.log('Thunk failed');
-            if (e.response.status === 404) {
+            if (e.response.status === 401) {
                 throw new Error("User not found");
-            } else if (e.response.status === 401) {
+            } else if (e.response.status === 402) {
                 throw new Error("Incorrect password");
             }
             throw e;

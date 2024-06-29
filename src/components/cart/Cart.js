@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { cartCall, checkout, deleteItem, selectCheckoutSuccess, selectHasError, selectcartItems, updateQuantity } from './CartSlice'
+import { cartCall, checkout, deleteItem, selectcartItems, updateQuantity } from './CartSlice'
 import { selectToken } from '../signup/loginSlice';
 import Product from '../products/Product';
 import './Cart.css'
@@ -10,8 +10,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function Cart() {
   const [noCart, setNoCart] = useState()
-  const checkoutSuccess = useSelector(selectCheckoutSuccess)
-  const hasError = useSelector(selectHasError)
   const navigate = useNavigate();
   const cartItems = useSelector(selectcartItems);
   const dispatch = useDispatch();
@@ -21,12 +19,19 @@ function Cart() {
   useEffect(() => {
     if (token) {
       dispatch(cartCall({ token }));
+    }
+  }, [dispatch, token]);
 
+  // Check if the cart is empty when cartItems changes
+
+
+  useEffect(() => {
+    if (cartItems && cartItems.length === 0) {
+      setNoCart(true);
+    } else {
+      setNoCart(false);
     }
-    if (cartItems.length === 0) {
-      setNoCart(true)
-    }
-  },)
+  }, [cartItems]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,14 +41,11 @@ function Cart() {
     dispatch(getProductById({ id, token }))
     navigate(`/home/products/${id}`)
   }
-  const handleQuantityChange = (id, quantity, token) => {
-    // console.log(`Changing quantity for item ${id} to ${quantity} (type: ${typeof quantity})`);
-
+  const handleQuantityChange = async (id, quantity, token) => {
     if (quantity === 0) {
-      // console.log(`Dispatching deleteItem for item ${id}`);
       dispatch(deleteItem({ id, token }));
+      dispatch(cartCall({ token })); // Re-fetch cart items after deletion
     } else {
-      // console.log(`Dispatching updateQuantity for item ${id} to ${quantity}`);
       dispatch(updateQuantity({ id, quantity, token }));
     }
   };

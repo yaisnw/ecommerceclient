@@ -1,5 +1,5 @@
 import './App.css';
-import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route, useNavigate, Navigate } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter, createRoutesFromElements, Route, useNavigate, Navigate, redirect } from 'react-router-dom';
 import Signup from './components/signup/Signup';
 import { Provider, useSelector } from 'react-redux';
 import { persistor, store } from './Store';
@@ -15,7 +15,7 @@ import Nav from './components/nav/Nav';
 
 
 const router = createBrowserRouter(createRoutesFromElements(
-  <Route path="/">
+  <Route path="/" >
     <Route path="signup" element={< Signup />} />
     <Route path="login" element={< Login />} />
     <Route path="home" element={< Nav />}>
@@ -23,12 +23,9 @@ const router = createBrowserRouter(createRoutesFromElements(
       <Route path="products/:id" element={< ProductDetail />} />
       <Route path="cart" element={< Cart />} />
     </Route>
+    <Route index element={<Navigate to="signup" replace />} />
   </Route>
 ))
-
-
-
-
 
 
 function App() {

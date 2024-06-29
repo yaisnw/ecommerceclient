@@ -1,21 +1,49 @@
-.product {
-    width: 100px;
-}
+
+
 .productFlex {
     cursor: pointer;
-    max-width: 700px;
+    width: 100%;
     height: 100px;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     gap: 20px;
     border-top: 4px solid black;
     border-bottom: 4px solid black;
     margin-bottom: 10px;
 }
+
 .productsGrid {
     display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Two columns of equal width */
+    gap: 20px;
+    /* Adjust the gap between items */
+    padding: 20px;
+    /* Optional padding adjustment */
+}
+
+.productFlex img {
+    width: auto;
+    /* Adjust image size if needed */
+    height: 90px;
+    margin: 0 auto;
+}
+.imageBox {
+    width: 150px;
+    display: flex;
     justify-content: center;
-    column-gap: 50px;
-    grid-template-columns: 500px 500px;
+}
+.productInfo {
+    flex: 1; /* Ensure the product info takes remaining space */
+    margin-left: 20px; /* Adjust left margin between image and info */
+}
+.productFlex p {
+    text-align: center;
+    width: 200px;
+    margin: 0 auto;
+}
+.productName {
+    min-width: 200px;
+    text-align: left;
 }

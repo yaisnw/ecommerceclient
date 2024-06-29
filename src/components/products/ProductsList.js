@@ -18,7 +18,8 @@ function ProductsList() {
 
     useEffect(() => {
         dispatch(productsCall(token))
-    }, [dispatch, token])
+        // eslint-disable-next-line
+    }, [])
 
     const productHandler = (id, token) => {
         dispatch(getProductById({ id, token }))

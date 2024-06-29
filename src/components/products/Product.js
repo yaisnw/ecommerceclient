@@ -6,7 +6,7 @@ function Product({ name, price, quantity, category, image, onClick }) {
 
   return (
     <div className='productFlex' onClick={onClick}>
-      <img className='product' src={image} alt="product" />
+      <div className='imageBox'><img src={image} alt="product" /></div>
       <h3 className='productName'>{name}</h3>
       <p>Price: {price}</p>
       {quantity && <p>Quantity: {quantity}</p>}

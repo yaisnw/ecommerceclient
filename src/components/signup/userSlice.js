@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { PURGE } from "redux-persist";
 
 
 
@@ -22,16 +24,18 @@ export const signup = createAsyncThunk(
     }
 );
 
+const initialState = {
+    username: "",
+    password: "",
+    error: "",
+    isLoading: false,
+    hasError: false,
+    isSignedup: false
+};
+
 export const userSlice = createSlice({
     name: "user",
-    initialState: {
-        username: "",
-        password: "",
-        error: "",
-        isLoading: false,
-        hasError: false,
-        isSignedup: false
-    },
+    initialState,
     reducers: {
         addUsername: (state, action) => {
             state.username = action.payload;
@@ -64,8 +68,14 @@ export const userSlice = createSlice({
                     state.isSignedup = true;
                     state.isLoading = false;
                     state.hasError = false;
+                    state.error = "";
+
                 }
             )
+            .addCase(PURGE, (state) => {
+                return initialState;
+            });
+
     }
 })
 

@@ -14,6 +14,7 @@ import {
   signup
 } from './userSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { persistor } from '../../Store'
 
 function Signup() {
   const password = useSelector(selectPassword)
@@ -24,12 +25,11 @@ function Signup() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-
   useEffect(() => {
     if (isSignedup) {
-      navigate("/login");
+      navigate('/login')
     }
-  }, [isSignedup, navigate]);
+  })
 
   const handleUsername = (e) => {
     dispatch(addUsername(e.target.value))
@@ -41,9 +41,10 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(signup({ username, password }));
-
-
+      dispatch(signup({ username, password }));
+      if (isSignedup) {
+        navigate('/login')
+      }
     } catch (error) {
       console.error('Signup failed:', error);
       dispatch(setError(error.message));
@@ -54,7 +55,7 @@ function Signup() {
   // console.log(password)
   return (
     <div className='formBox'>
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="signForm" onSubmit={handleSubmit}>
         <div className="http">
           {error && <p>{error}</p>}
           {isLoading && <p>Loading</p>}

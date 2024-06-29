@@ -1,10 +1,13 @@
 .form {
-    margin-top: 300px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     grid-template-columns: 15%;
-    
+
+}
+.formBox {
+    margin: 300px;
 }
 .submit {
     margin-top: 15px;
@@ -29,4 +32,7 @@
 .http {
     display: flex;
     justify-content: center;
+}
+.guide {
+    text-align: center;
 }

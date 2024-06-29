@@ -17,13 +17,15 @@ import "./Login.css";
 import google from "./google.svg";
 import facebook from "./facebook.svg"
 import { useEffect } from "react";
+import { selectisSignedup } from "./userSlice";
 
 function Login() {
   const password = useSelector(selectPassword);
   const username = useSelector(selectUsername);
   const token = useSelector(selectToken);
   const error = useSelector(selectError);
-  const isLoading = useSelector(selectisLoading)
+  const isLoading = useSelector(selectisLoading);
+  const isSignedup = useSelector(selectisSignedup);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -52,44 +54,21 @@ function Login() {
     }
 
   };
-  const handleGoogle = async (e) => {
-    e.preventDefault();
-    try {
 
-      window.location.href = 'http://localhost:4000/auth/google'
-
-    }
-    catch (e) {
-      throw e
-    }
-    finally {
-      dispatch(setisLoggedin())
-    }
-
-  }
-  const handleFacebook = async (e) => {
-    e.preventDefault();
-    try {
-      window.location.href = 'http://localhost:4000/auth/facebook';
-
-    }
-    catch (e) {
-      dispatch(setError(error.message))
-    }
-  }
   return (
     <div className="formBox">
       <div className="http">
         {error && <p>{error}</p>}
         {isLoading && <p>Loading</p>}
       </div>
+      <h2 className="guide">Please log in</h2>
       <form className="form" onSubmit={handleSubmit}>
         <label>Username</label>
         <input name="username" value={username} onChange={handleUsername} type="text" />
         <label>Password</label>
         <input name="password" value={password} onChange={handlePassword} type="password" />
         <input className="submit" type="submit" />
-        <Link to="/signup">Sign up page</Link>
+        {!isSignedup && <Link to="/signup">Sign up page</Link>}
       </form>
       {/* <div className="oauthBox1">
         <p>Login using:</p>

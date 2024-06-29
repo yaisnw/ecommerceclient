@@ -1,13 +1,23 @@
 .detailFlex {
+    width: 1300px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     column-gap: 50px;
-    margin-top: 300px;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+.imgDiv{
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 200px;
 }
 .img {
-    width: 200px;
+    max-width: 600px;
     height: auto;
+
 }
 form input {
     text-align: center;

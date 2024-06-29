@@ -7,7 +7,7 @@ export const loginCall = createAsyncThunk(
     async ({ username, password }, thunkAPI) => {
         console.log('Thunk started');
         try {
-            const response = await axios.post("http://localhost:4000/login", {
+            const response = await axios.post("https://ecommercebackend-plha.onrender.com/login", {
                 username,
                 password
             });

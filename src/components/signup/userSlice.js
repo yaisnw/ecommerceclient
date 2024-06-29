@@ -10,7 +10,7 @@ export const signup = createAsyncThunk(
     'user/signup',
     async ({ username, password }) => {
         try {
-            const response = await axios.post('http://localhost:4000/accounts/signup', {
+            const response = await axios.post('https://ecommercebackend-plha.onrender.com/accounts/signup', {
                 username,
                 password
             });

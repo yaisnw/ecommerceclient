@@ -5,7 +5,7 @@ export const getProductById = createAsyncThunk(
     'productdetail/productbyid',
     async ({id, token}) => {
         try { 
-            const response = await axios.get(`http://localhost:4000/products/${id}`, {
+            const response = await axios.get(`https://ecommercebackend-plha.onrender.com/products/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -23,7 +23,7 @@ export const addToCart = createAsyncThunk(
     'productdetail/addtocart',
     async ({id, quantity, token}) => {
         try {
-            await axios.post('http://localhost:4000/cart/item', {
+            await axios.post('https://ecommercebackend-plha.onrender.com/cart/item', {
                 product_id: id,
                 quantity: quantity
             }, {

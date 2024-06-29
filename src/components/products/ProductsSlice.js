@@ -5,7 +5,7 @@ export const productsCall = createAsyncThunk(
     'products/call',
     async (token) => {
         try {
-            const response = await axios.get('http://localhost:4000/products', {
+            const response = await axios.get('https://ecommercebackend-plha.onrender.com/products', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

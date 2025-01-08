@@ -3,9 +3,9 @@ import axios from "axios";
 
 export const productsCall = createAsyncThunk(
     'products/call',
-    async (token) => {
+    async (token, {rejectWithValue}) => {
         try {
-            const response = await axios.get('https://ecommercebackend-plha.onrender.com/products', {
+            const response = await axios.get('http://localhost:4000/products', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -14,7 +14,11 @@ export const productsCall = createAsyncThunk(
             return response.data
         }
         catch (e) {
-            throw e
+            console.log('Thunk failed');
+            if (e.response) {
+                return rejectWithValue(e.response.data.msg); 
+            }
+            return rejectWithValue("An unknown error occurred");
         }
 
     }

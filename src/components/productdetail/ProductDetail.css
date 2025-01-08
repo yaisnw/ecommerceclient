@@ -1,11 +1,15 @@
-.detailFlex {
+.detailGrid {
     width: 1300px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    row-gap: 5rem;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    text-align: center;
     column-gap: 50px;
     margin: 0 auto;
-    margin-top: 100px;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
 }
 .imgDiv{
     margin-top: 100px;
@@ -15,9 +19,9 @@
     column-gap: 200px;
 }
 .img {
-    max-width: 600px;
-    height: auto;
-
+    max-width: 20rem;
+    max-height: 20rem;
+    margin: 0 auto;
 }
 form input {
     text-align: center;
@@ -30,9 +34,13 @@ form input {
     border: 3px black solid;
     max-width: 200px;
     margin: 0 auto;
+    margin-top: 50px;
 }
-.cartNotification {
-
+.cartForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 0.5rem;
 }
 .cross {
     width: 25px;
@@ -44,4 +52,8 @@ form input {
 
 .cart:hover{
     cursor: pointer;
+}
+.qtyField {
+    border-radius: 0.7rem;
+    padding: 0.5rem 1rem;
 }

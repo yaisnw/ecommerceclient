@@ -3,12 +3,12 @@ import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { persistor } from '../../Store'
 import cart from '../cart/cart-shopping-svgrepo-com.svg'
 import { jwtDecode } from 'jwt-decode'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectToken } from '../signup/loginSlice'
-import { motion } from "framer-motion"
 import "./Nav.css"
 
 function Nav() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector(selectToken)
 
@@ -16,9 +16,9 @@ function Nav() {
     if (token) {
       const tokenExpiry = jwtDecode(token).exp * 1000;
       const now = Date.now();
-      console.log(token)
       if (now >= tokenExpiry) {
-        persistor.purge()
+        persistor.purge();
+        dispatch({ type: 'RESET_STATE'})
         navigate('/login')
       }
     } else {
@@ -31,7 +31,7 @@ function Nav() {
   return (
     <div>
       <nav className='navbar'>
-        <div>
+        <div className='leftNav'>
           <Link className='home' to="products">Home</Link>
           <Link className='signout' onClick={() => { persistor.purge() }} to="/login">Sign out</Link>
         </div>

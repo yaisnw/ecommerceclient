@@ -4,10 +4,10 @@ import { PURGE } from 'redux-persist';
 
 export const loginCall = createAsyncThunk(
     'login/call',
-    async ({ username, password }, thunkAPI) => {
+    async ({ username, password }, {rejectWithValue} ) => {
         console.log('Thunk started');
         try {
-            const response = await axios.post("https://ecommercebackend-plha.onrender.com/login", {
+            const response = await axios.post("http://localhost:4000/login", {
                 username,
                 password
             });
@@ -15,24 +15,20 @@ export const loginCall = createAsyncThunk(
             return response.data;
         } catch (e) {
             console.log('Thunk failed');
-            if (e.response.status === 401) {
-                throw new Error("User not found");
-            } else if (e.response.status === 402) {
-                throw new Error("Incorrect password");
+            if (e.response) {
+                return rejectWithValue(e.response.data.msg); 
             }
-            throw e;
+            return rejectWithValue("An unknown error occurred");
         }
     }
 );
 
 
+
 const initialState = {
-    username: "",
-    password: "",
     token: "",
     error: "",
     isLoading: false,
-    hasError: false,
 };
 
 
@@ -40,36 +36,22 @@ export const loginSlice = createSlice({
     name: "login",
     initialState,
     reducers: {
-        addUsername: (state, action) => {
-            state.username = action.payload;
-        },
-        addPassword: (state, action) => {
-            state.password = action.payload;
-        },
-        setError: (state, action) => {
-            state.error = action.payload;
-        },
-        setisLoggedin: (state, action) => {
-            state.isLoggedin = true
-        },
+
         logout: state => {
-            state.token = '';
-            state.isLoggedin = false;
-            state.expirationTime = null;
+            return initialState;
         },
     },
     extraReducers: (builder) => {
         builder.addCase(
             loginCall.pending, (state, action) => {
                 state.isLoading = true;
-                state.hasError = false;
+                state.error = '';
             }
         )
             .addCase(
                 loginCall.rejected, (state, action) => {
                     state.isLoading = false;
-                    state.hasError = true;
-                    state.error = action.error.message
+                    state.error = action.payload;
                 }
             )
             .addCase(
@@ -77,7 +59,7 @@ export const loginSlice = createSlice({
                     state.isLoggedin = true;
                     state.token = action.payload;
                     state.isLoading = false;
-                    state.hasError = false;
+                    state.error = '';
                 }
             )
             .addCase(PURGE, (state) => {
@@ -87,18 +69,13 @@ export const loginSlice = createSlice({
     }
 })
 
-export const selectUsername = (state) => state.login.username;
-export const selectPassword = (state) => state.login.password;
+
 export const selectToken = (state) => state.login.token;
-export const selectisLoggedin = (state) => state.login.isLoggedin;
 export const selectisLoading = (state) => state.login.isLoading;
 export const selectError = (state) => state.login.error;
 
 export const {
-    addUsername,
-    addPassword,
-    setError,
-    setisLoggedin
+    logout
 } = loginSlice.actions
 
 export default loginSlice.reducer;

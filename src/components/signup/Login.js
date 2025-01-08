@@ -1,82 +1,80 @@
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  selectPassword,
-  selectUsername,
-  addUsername,
-  addPassword,
-  selectError,
   loginCall,
-  setError,
-  selectisLoggedin,
-  selectisLoading,
-  setisLoggedin,
   selectToken,
+  selectError,
+  selectisLoading,
+  logout
 } from "./loginSlice";
-import "./Login.css";
-import google from "./google.svg";
-import facebook from "./facebook.svg"
-import { useEffect } from "react";
 import { selectisSignedup } from "./userSlice";
+import "./auth.css";
 
 function Login() {
-  const password = useSelector(selectPassword);
-  const username = useSelector(selectUsername);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  
   const token = useSelector(selectToken);
   const error = useSelector(selectError);
   const isLoading = useSelector(selectisLoading);
   const isSignedup = useSelector(selectisSignedup);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(token){
-      console.log('Token is available, navigating to /home/products');
-      navigate('/home/products')
+    if (token) {
+      navigate('/home/products');
     }
-  }, [token, navigate])
+    else {
+      dispatch(logout());
+    }
+  }, [token, navigate, dispatch]);
 
   const handleUsername = (e) => {
-    dispatch(addUsername(e.target.value));
+    setUsername(e.target.value);
   };
+
   const handlePassword = (e) => {
-    dispatch(addPassword(e.target.value));
+    setPassword(e.target.value);
   };
 
   const handleSubmit = async (e) => {
-    dispatch(setError(''))
     e.preventDefault();
     try {
-      await dispatch(loginCall({ username, password }));
+      dispatch(loginCall({ username, password }));
     } catch (error) {
-      console.error('Signup failed:', error);
-      dispatch(setError(error.message));
+      console.error('Login failed:', error);
     }
-
   };
-
+  console.log(token)
   return (
     <div className="formBox">
-      <div className="http">
-        {error && <p>{error}</p>}
-        {isLoading && <p>Loading</p>}
-      </div>
-      <h2 className="guide">Please log in</h2>
-      <form className="form" onSubmit={handleSubmit}>
-        <label>Username</label>
-        <input name="username" value={username} onChange={handleUsername} type="text" />
-        <label>Password</label>
-        <input name="password" value={password} onChange={handlePassword} type="password" />
-        <input className="submit" type="submit" />
-        {!isSignedup && <Link to="/signup">Sign up page</Link>}
-      </form>
-      {/* <div className="oauthBox1">
-        <p>Login using:</p>
-        <div className="oauthBox2">
-          <img onClick={handleGoogle} className="svg" src={google} alt="google" />
-          <img onClick={handleFacebook} className="svg" src={facebook} alt="facebook" />
+      <form className="authForm" onSubmit={handleSubmit}>
+        <div className="http">
+          {error && <p>{error}</p>}
+          {isLoading && <p>Loading</p>}
         </div>
-      </div> */}
+        {isSignedup && <h1> You have signed up!</h1>}
+        <h2 className="guide">Enter your credentials:</h2>
+        <label>Username</label>
+        <input
+          name="username"
+          value={username}
+          onChange={handleUsername}
+          type="text"
+        />
+        <label>Password</label>
+        <input
+          name="password"
+          value={password}
+          onChange={handlePassword}
+          type="password"
+        />
+        <input className="submit" type="submit" value="Log in" />
+        {!isSignedup && <Link to="/signup">Sign up here</Link>}
+      </form>
     </div>
   );
 }

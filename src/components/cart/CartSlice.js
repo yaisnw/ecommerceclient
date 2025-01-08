@@ -6,7 +6,7 @@ export const cartCall = createAsyncThunk(
     'cart/items',
     async ({ token }) => {
         try {
-            const response = await axios.get('https://ecommercebackend-plha.onrender.com/cart', {
+            const response = await axios.get('http://localhost:4000/cart', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -24,7 +24,7 @@ export const checkout = createAsyncThunk(
     'cart/checkout',
     async (token) => {
         try {
-            const response = await axios.post('https://ecommercebackend-plha.onrender.com/cart/checkout', {}, {
+            const response = await axios.post('http://localhost:4000/cart/checkout', {}, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -41,7 +41,7 @@ export const updateQuantity = createAsyncThunk(
     'cart/quantity',
     async ({ id, quantity, token }) => {
         try {
-            const response = await axios.put(`https://ecommercebackend-plha.onrender.com/cart/item/${id}`, {
+            const response = await axios.put(`http://localhost:4000/cart/item/${id}`, {
                 quantity: quantity
             },
                 {
@@ -62,12 +62,12 @@ export const deleteItem = createAsyncThunk(
     'cart/delete',
     async ({ id, token }) => {
         try {
-            const response = await axios.delete(`https://ecommercebackend-plha.onrender.com/cart/item/${id}`, {
+            const response = await axios.delete(`http://localhost:4000/cart/item/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            return response;  // Return the ID of the deleted item
+            return response;  
         } catch (e) {
             console.log(e);
             throw e;

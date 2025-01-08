@@ -1,75 +1,71 @@
-import React, { useEffect } from 'react'
-import "./Signup.css"
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import "./auth.css";
+import { Link, useNavigate } from 'react-router-dom';
 import {
-  selectUsername,
-  selectPassword,
   selectisSignedup,
   selectisLoading,
-  selecthasError,
   selectError,
-  setError,
-  addPassword,
-  addUsername,
+  signout,
   signup
-} from './userSlice'
-import { useDispatch, useSelector } from 'react-redux'
-import { persistor } from '../../Store'
+} from './userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectToken } from './loginSlice';
 
 function Signup() {
-  const password = useSelector(selectPassword)
-  const username = useSelector(selectUsername)
-  const isSignedup = useSelector(selectisSignedup)
-  const isLoading = useSelector(selectisLoading)
-  const error = useSelector(selectError)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const token = useSelector(selectToken);
+  const isSignedup = useSelector(selectisSignedup);
+  const isLoading = useSelector(selectisLoading);
+  const error = useSelector(selectError);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isSignedup) {
-      navigate('/login')
+      navigate('/login');
     }
-  })
+    else if(token) {
+      navigate('/home/products')
+    }
+    else {
+      dispatch(signout());
+    }
+  }, [isSignedup, navigate, dispatch, token]);
 
   const handleUsername = (e) => {
-    dispatch(addUsername(e.target.value))
-  }
-  const handlePassword = (e) => {
-    dispatch(addPassword(e.target.value))
-  }
+    setUsername(e.target.value);
+  };
 
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       dispatch(signup({ username, password }));
-      if (isSignedup) {
-        navigate('/login')
-      }
     } catch (error) {
       console.error('Signup failed:', error);
-      dispatch(setError(error.message));
     }
-
-
   };
-  // console.log(password)
+
   return (
-    <div className='formBox'>
-      <form className="signForm" onSubmit={handleSubmit}>
+    <div className="formBox">
+      <form className="authForm" onSubmit={handleSubmit}>
         <div className="http">
           {error && <p>{error}</p>}
           {isLoading && <p>Loading</p>}
         </div>
-
+        <h2 className="guide">Create an account:</h2>
         <label>Username</label>
         <input value={username} onChange={handleUsername} type="text" />
         <label>Password</label>
         <input value={password} onChange={handlePassword} type="password" />
-        <input className="submit" type="submit" />
-        <Link to="/login">Log in</Link>
+        <input className="submit" type="submit" value="Sign up" />
+        <Link to="/login">Login here</Link>
       </form>
     </div>
-  )
+  );
 }
 
-export default Signup
+export default Signup;

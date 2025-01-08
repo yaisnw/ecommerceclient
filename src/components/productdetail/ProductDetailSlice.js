@@ -2,10 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const getProductById = createAsyncThunk(
-    'productdetail/productbyid',
-    async ({id, token}) => {
-        try { 
-            const response = await axios.get(`https://ecommercebackend-plha.onrender.com/products/${id}`, {
+    'productDetail/productbyid',
+    async ({ id, token }) => {
+        try {
+            const response = await axios.get(`http://localhost:4000/products/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -20,10 +20,10 @@ export const getProductById = createAsyncThunk(
 )
 
 export const addToCart = createAsyncThunk(
-    'productdetail/addtocart',
-    async ({id, quantity, token}) => {
+    'productDetail/addtocart',
+    async ({ id, quantity, token }) => {
         try {
-            await axios.post('https://ecommercebackend-plha.onrender.com/cart/item', {
+            await axios.post('http://localhost:4000/cart/item', {
                 product_id: id,
                 quantity: quantity
             }, {
@@ -41,12 +41,34 @@ export const addToCart = createAsyncThunk(
     }
 )
 
+export const getFilteredProducts = createAsyncThunk(
+    'productDetail/getFilteredProducts',
+    async ({id, category, token }, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`http://localhost:4000/products/category?category=${category}&id=${id}`, {
+                withCredentials: true,
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            return response.data
+        }
+        catch (e) {
+            if (e.response) {
+                return rejectWithValue(e.response.data.msg);
+            }
+            return rejectWithValue("An unknown error occurred");
+        }
+    }
+)
+
 const ProductDetailSlice = createSlice({
-    name: "productdetail",
+    name: "productDetail",
     initialState: {
         product: {},
+        filteredProducts: [],
         isLoading: false,
-        hasError: false,
+        error: '',
         quantity: 0,
         addedToCart: false
     },
@@ -97,13 +119,27 @@ const ProductDetailSlice = createSlice({
                     state.addedToCart = true;
                 }
             )
+            .addCase(getFilteredProducts.pending, (state) => {
+                state.isLoading = true;
+                state.error = '';
+            })
+            .addCase(getFilteredProducts.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+            .addCase(getFilteredProducts.fulfilled, (state, action) => {
+                console.log('Filtered Products:', action.payload);
+                state.isLoading = false;
+                state.error = '';
+                state.filteredProducts = action.payload
+            })
     }
 
 })
 
-export const selectProductDetail = (state) => state.productdetail.product;
-export const selectQuantity = (state) => state.productdetail.quantity;
-export const selectAddedToCart = (state) => state.productdetail.addedToCart;
+export const selectProductDetail = (state) => state.productDetail.product;
+export const selectQuantity = (state) => state.productDetail.quantity;
+export const selectAddedToCart = (state) => state.productDetail.addedToCart;
+export const selectFilteredProducts = (state) => state.productDetail.filteredProducts
 
 export const { setQuantity, setAddedToCart } = ProductDetailSlice.actions
 

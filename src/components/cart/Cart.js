@@ -2,27 +2,30 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cartCall, checkout, deleteItem, selectcartItems, updateQuantity } from './CartSlice'
 import { selectToken } from '../signup/loginSlice';
-import Product from '../products/Product';
+import ProductCard from '../products/ProductCard';
 import './Cart.css'
-import { getProductById } from '../productdetail/ProductDetailSlice';
-import { Link, useNavigate } from 'react-router-dom';
+import { getProductById } from '../productDetail/ProductDetailSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 function Cart() {
-  const [noCart, setNoCart] = useState()
+  const [noCart, setNoCart] = useState();
+  const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
   const cartItems = useSelector(selectcartItems);
   const dispatch = useDispatch();
   const token = useSelector(selectToken)
 
 
+
   useEffect(() => {
     if (token) {
       dispatch(cartCall({ token }));
     }
-  }, [dispatch, token]);
-
-  // Check if the cart is empty when cartItems changes
+    else {
+      navigate('/login')
+    }
+  }, [dispatch, token, navigate, cartItems]);
 
 
   useEffect(() => {
@@ -33,6 +36,10 @@ function Cart() {
     }
   }, [cartItems]);
 
+  const handleQuantityChange = (e) => {
+    const value = Math.max(1, Math.min(10, parseInt(e.target.value) || 1)); // Restrict input between 1 and 10
+    setQuantity(value);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(checkout(token))
@@ -41,19 +48,23 @@ function Cart() {
     dispatch(getProductById({ id, token }))
     navigate(`/home/products/${id}`)
   }
-  const handleQuantityChange = async (id, quantity, token) => {
-    if (quantity === 0) {
-      dispatch(deleteItem({ id, token }));
-      dispatch(cartCall({ token })); // Re-fetch cart items after deletion
-    } else {
-      dispatch(updateQuantity({ id, quantity, token }));
+  const submitQuantity = async (e, id) => {
+    e.preventDefault();
+    const action = e.nativeEvent.submitter.name;
+    if(action === 'remove') {
+      dispatch(deleteItem({id, token}))
+    }
+    else if(action === 'confirm') {
+      dispatch(updateQuantity({id, quantity, token}))
     }
   };
   if (noCart) {
     return (
-      <div>
-        <p className='noCart'>You have no items in your cart currently, pleace proceed to <Link to="/home/products">the products page</Link></p>
-
+      <div >
+        <div className='noCartContainer'>
+          <p className='noCart'>You have no items in your cart currently.</p>
+          <button onClick={() => navigate('/home/products')}>Shop now</button>
+        </div>
       </div>
     )
   }
@@ -66,29 +77,31 @@ function Cart() {
         </form>
         <ul className='cartGrid'>
           {cartItems?.map((item) => (
-            <div key={item.id} className="cartItem">
-              <Product
-                name={item.name}
-                price={item.price}
-                quantity={item.quantity}
-                category={item.category}
-                image={item.image}
-                onClick={() => productHandler(item.product_id, token)}
-              />
+            <div key={item.id} >
               <div>
-                <label htmlFor={`quantity-${item.id}`}>Quantity: </label>
-                <select
-                  style={{ fontFamily: "Roboto Mono" }}
-                  id={`quantity-${item.id}`}
-                  value={item.quantity}
-                  onChange={(e) => handleQuantityChange(item.product_id, Number(e.target.value), token)}
-                >
-                  <option value={0} >0(Remove)</option>
-                  {Array.from({ length: 10 }, (_, i) => i + 1).map((num) => (
-                    <option key={num} value={num}>{num}</option>
-                  ))}
-                </select>
+                <ProductCard
+                  name={item.name}
+                  price={item.price}
+                  quantity={item.quantity}
+                  category={item.category}
+                  image={item.image}
+                  onClick={() => productHandler(item.product_id, token)}
+                  showAddToCartButton={false}
+                />
               </div>
+              <form className="quantityForm" onSubmit={(e) => submitQuantity(e, item.product_id)}>
+                <label>Quantity: </label>
+                <input
+                type="number" 
+                name="quantity"
+                min="1"
+                max="10"
+                onChange={handleQuantityChange}
+                className='qtyField'
+                />
+                <input type='submit' name="confirm" value="Confirm" className="qtyButton"/>
+                <input type='submit' name="remove" value="Remove" className="qtyButton"/>
+              </form>
             </div>
           ))}
         </ul>

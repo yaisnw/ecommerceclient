@@ -73,7 +73,7 @@ function Login() {
           type="password"
         />
         <input className="submit" type="submit" value="Log in" />
-        {!isSignedup && <Link to="/signup">Sign up here</Link>}
+        {!isSignedup && <Link className="navigateLink" to="/signup">Sign up here</Link>}
       </form>
     </div>
   );

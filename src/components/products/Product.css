@@ -13,10 +13,13 @@
     align-items: center;
     padding: 1rem;
     height: 25vh;
+    transition: transform 0.2s ease, border 0.1s ease-in-out;
 }
 
 .product-card:hover {
     cursor: pointer;
+    transform: scale(1.01);
+    border: 3px solid black;
 }
 
 .imageBox {
@@ -65,9 +68,16 @@
     padding: 0.5rem 1rem;
     border-radius: 0.7rem;
     border: 0;
+    background-color: rgb(197, 197, 197);
+    color: black;
+    font-family: 'Roboto Mono';
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease;
+}
+.add:hover {
+    cursor: pointer;
     background-color: black;
     color: white;
-    font-family: 'Roboto Mono';
+    transform: scale(1.1);
 }
 
 .added-text {

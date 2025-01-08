@@ -31,13 +31,22 @@
     background-color: black;
     color: white;
     font-family: 'Roboto Mono';
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s ease;
 }
-a {
-    text-decoration: none;
+.submit:hover {
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    transform: scale(1.1);
 }
-.form a {
-    margin-top: 10px;
+
+.navigateLink {
     text-decoration: none;
+    
+    transition: transform 0.1s ease-in-out;
+}
+.navigateLink:hover {
+    transform: scale(1.1);
 }
 
 .svg {

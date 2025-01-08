@@ -62,7 +62,7 @@ function Signup() {
         <label>Password</label>
         <input value={password} onChange={handlePassword} type="password" />
         <input className="submit" type="submit" value="Sign up" />
-        <Link to="/login">Login here</Link>
+        <Link className='navigateLink' to="/login">Login here</Link>
       </form>
     </div>
   );

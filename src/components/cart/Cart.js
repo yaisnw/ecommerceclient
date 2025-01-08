@@ -63,7 +63,7 @@ function Cart() {
       <div >
         <div className='noCartContainer'>
           <p className='noCart'>You have no items in your cart currently.</p>
-          <button onClick={() => navigate('/home/products')}>Shop now</button>
+          <button className='cartButton' onClick={() => navigate('/home/products')}>Shop now</button>
         </div>
       </div>
     )
@@ -73,7 +73,7 @@ function Cart() {
       <div >
         <form className='checkout' onSubmit={handleSubmit}>
           <label>Finish Checkout:</label>
-          <button className='order' type="submit">Order</button>
+          <button className='cartButton' type="submit">Order</button>
         </form>
         <ul className='cartGrid'>
           {cartItems?.map((item) => (
@@ -99,8 +99,8 @@ function Cart() {
                 onChange={handleQuantityChange}
                 className='qtyField'
                 />
-                <input type='submit' name="confirm" value="Confirm" className="qtyButton"/>
-                <input type='submit' name="remove" value="Remove" className="qtyButton"/>
+                <input type='submit' name="confirm" value="Confirm" className="cartButton"/>
+                <input type='submit' name="remove" value="Remove" className="cartButton"/>
               </form>
             </div>
           ))}

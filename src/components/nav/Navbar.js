@@ -29,7 +29,7 @@ function Nav() {
 
 
   return (
-    <div>
+    <div className='stickyNav'>
       <nav className='navbar'>
         <div className='leftNav'>
           <Link className='home' to="products">Home</Link>

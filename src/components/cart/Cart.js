@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { cartCall, checkout, deleteItem, selectcartItems, updateQuantity } from './CartSlice'
+import { cartCall, checkout, deleteItem, selectCartChanged, selectcartItems, updateQuantity } from './CartSlice'
 import { selectToken } from '../signup/loginSlice';
 import ProductCard from '../products/ProductCard';
 import './Cart.css'
@@ -14,9 +14,8 @@ function Cart() {
   const navigate = useNavigate();
   const cartItems = useSelector(selectcartItems);
   const dispatch = useDispatch();
-  const token = useSelector(selectToken)
-
-
+  const token = useSelector(selectToken);
+  const cartChanged = useSelector(selectCartChanged);
 
   useEffect(() => {
     if (token) {
@@ -25,8 +24,7 @@ function Cart() {
     else {
       navigate('/login')
     }
-  }, [dispatch, token, navigate, cartItems]);
-
+  }, [dispatch, token, navigate]);
 
   useEffect(() => {
     if (cartItems && cartItems.length === 0) {
@@ -35,6 +33,12 @@ function Cart() {
       setNoCart(false);
     }
   }, [cartItems]);
+
+  useEffect(() => {
+    if (cartChanged) {
+      dispatch(cartCall({ token }))
+    }
+  })
 
   const handleQuantityChange = (e) => {
     const value = Math.max(1, Math.min(10, parseInt(e.target.value) || 1)); // Restrict input between 1 and 10
@@ -51,11 +55,11 @@ function Cart() {
   const submitQuantity = async (e, id) => {
     e.preventDefault();
     const action = e.nativeEvent.submitter.name;
-    if(action === 'remove') {
-      dispatch(deleteItem({id, token}))
+    if (action === 'remove') {
+      dispatch(deleteItem({ id, token }))
     }
-    else if(action === 'confirm') {
-      dispatch(updateQuantity({id, quantity, token}))
+    else if (action === 'confirm') {
+      dispatch(updateQuantity({ id, quantity, token }))
     }
   };
   if (noCart) {
@@ -73,34 +77,32 @@ function Cart() {
       <div >
         <form className='checkout' onSubmit={handleSubmit}>
           <label>Finish Checkout:</label>
-          <button className='cartButton' type="submit">Order</button>
+          <button className='cartButton' name="order" type="submit">Order</button>
         </form>
         <ul className='cartGrid'>
           {cartItems?.map((item) => (
-            <div key={item.id} >
-              <div>
-                <ProductCard
-                  name={item.name}
-                  price={item.price}
-                  quantity={item.quantity}
-                  category={item.category}
-                  image={item.image}
-                  onClick={() => productHandler(item.product_id, token)}
-                  showAddToCartButton={false}
-                />
-              </div>
+            <div className='cartProductContainer' key={item.id} >
+              <ProductCard
+                name={item.name}
+                price={item.price}
+                quantity={item.quantity}
+                category={item.category}
+                image={item.image}
+                onClick={() => productHandler(item.product_id, token)}
+                showAddToCartButton={false}
+              />
               <form className="quantityForm" onSubmit={(e) => submitQuantity(e, item.product_id)}>
                 <label>Quantity: </label>
                 <input
-                type="number" 
-                name="quantity"
-                min="1"
-                max="10"
-                onChange={handleQuantityChange}
-                className='qtyField'
+                  type="number"
+                  name="quantity"
+                  min="1"
+                  max="10"
+                  onChange={handleQuantityChange}
+                  className='qtyField'
                 />
-                <input type='submit' name="confirm" value="Confirm" className="cartButton"/>
-                <input type='submit' name="remove" value="Remove" className="cartButton"/>
+                <input type='submit' name="confirm" value="Confirm" className="cartButton" />
+                <input type='submit' name="remove" value="Remove" className="cartButton" />
               </form>
             </div>
           ))}

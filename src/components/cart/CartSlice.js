@@ -67,7 +67,8 @@ export const deleteItem = createAsyncThunk(
                     'Authorization': `Bearer ${token}`
                 }
             });
-            return response;  
+            
+            return response;
         } catch (e) {
             console.log(e);
             throw e;
@@ -80,13 +81,14 @@ const initialState = {
     hasError: false,
     isLoading: false,
     checkoutSuccess: false,
-    updateSuccess: false
+    cartChanged: false
 }
 
 const CartSlice = createSlice({
     name: "cart",
     initialState,
     reducers: {
+
     },
     extraReducers: (builder) => {
         builder.addCase(cartCall.pending, (state, aciton) => {
@@ -100,6 +102,7 @@ const CartSlice = createSlice({
             .addCase(cartCall.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.hasError = false;
+                state.cartChanged = false;
                 state.cartItems = action.payload
             })
             .addCase(checkout.pending, (state) => {
@@ -120,7 +123,7 @@ const CartSlice = createSlice({
             .addCase(updateQuantity.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.hasError = false;
-                state.updateSuccess = true;
+                state.cartChanged = true;
                 const updatedItem = action.payload;
                 const index = state.cartItems.findIndex(item => item.id === updatedItem.id);
                 if (index !== -1) {
@@ -136,6 +139,7 @@ const CartSlice = createSlice({
             .addCase(deleteItem.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.hasError = false;
+                state.cartChanged = true;
             })
             .addCase(PURGE, (state) => {
                 return initialState
@@ -147,5 +151,7 @@ export const selectcartItems = (state) => state.cart.cartItems;
 export const selectIsLoading = (state) => state.cart.isLoading;
 export const selectHasError = (state) => state.cart.hasError;
 export const selectCheckoutSuccess = (state) => state.cart.checkoutSuccess;
+export const selectCartChanged = (state) => state.cart.cartChanged;
+
 
 export default CartSlice.reducer

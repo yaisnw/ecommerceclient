@@ -20,8 +20,8 @@ function ProductDetail() {
     const location = useLocation();
 
     useEffect(() => {
-        dispatch(getFilteredProducts({id, category, token }))
-    }, [dispatch,   id, category, token]);
+        dispatch(getFilteredProducts({ id, category, token }))
+    }, [dispatch, id, category, token]);
 
     useEffect(() => {
         dispatch(setAddedToCart(false));
@@ -47,22 +47,23 @@ function ProductDetail() {
     return (
         <div className=''>
             {addedToCart &&
-                <div className='cartFlex'>
+                <div className='cartNotif'>
                     <p className='cartNotification'>Added to cart!</p>
                     <img onClick={() => { dispatch(setAddedToCart(false)) }} src={cross} alt="" className='cross' />
                 </div>
             }
             <div className="detailGrid">
-                <h1>{name}</h1>
-                <p>{category}</p>
+                
+                <h1 className='name'>{name}</h1>
+                <p className='description'>{description}</p>
+                <p className='category'>{category}</p>
+                <p className='price'>Price: {price}</p>
+                <img src={image} alt="product" className='img' />
                 <form onSubmit={handleAddToCart} name="cartForm" className='cartForm'>
                     <label htmlFor='quantity'>Quantity:</label>
                     <input onChange={handleQuantity} name="quantity" type="number" min="1" max="10" className='qtyField' ></input>
                     <input className='add' value="Add to cart" type="submit"></input>
                 </form>
-                <img src={image} alt="product" className='img' />
-                <p>{description}</p>
-                <p>{price}</p>
             </div>
             <ul className='productsGrid'>
                 {filteredProducts.map(product => (

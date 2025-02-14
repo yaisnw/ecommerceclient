@@ -1,6 +1,7 @@
 import React from 'react';
 import './Product.css';
 
+
 function ProductCard({key, name, price, quantity, category, image, onClick, handleAddToCart, addedToCart, showAddToCart }) {
   return (
     <div className='product-card' onClick={onClick}>

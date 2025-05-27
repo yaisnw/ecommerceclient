@@ -5,7 +5,7 @@ import { Provider} from 'react-redux';
 import { persistor, store } from './Store';
 import Login from './components/signup/Login';
 import ProductsList from './components/products/ProductsList';
-import ProductDetail from './components/productDetail/ProductDetail';
+import ProductDetail from './components/cro/ProductDetail';
 import Cart from './components/cart/Cart';
 import { PersistGate } from 'redux-persist/integration/react';
 import Nav from './components/nav/Navbar';

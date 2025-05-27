@@ -4,7 +4,7 @@ import { cartCall, checkout, deleteItem, selectCartChanged, selectcartItems, upd
 import { selectToken } from '../signup/loginSlice';
 import ProductCard from '../products/ProductCard';
 import './Cart.css'
-import { getProductById } from '../productDetail/ProductDetailSlice';
+import { getProductById } from '../cro/ProductDetailSlice';
 import { useNavigate } from 'react-router-dom';
 
 

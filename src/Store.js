@@ -5,7 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import userReducer from "./components/signup/userSlice";
 import loginReducer from "./components/signup/loginSlice";
 import productsReducer from "./components/products/ProductsSlice";
-import productDetailReducer from "./components/productDetail/ProductDetailSlice";
+import productDetailReducer from "./components/cro/ProductDetailSlice";
 import cartReducer from "./components/cart/CartSlice";
 
 const persistConfig = {

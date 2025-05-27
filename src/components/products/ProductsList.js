@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { productsCall, selectAllProducts } from './ProductsSlice';
 import ProductCard from './ProductCard';
 import './Product.css';
-import { getProductById, addToCart } from '../productDetail/ProductDetailSlice';
+import { getProductById, addToCart } from '../cro/ProductDetailSlice';
 import { useNavigate } from 'react-router-dom';
 import { selectToken } from '../signup/loginSlice';
 

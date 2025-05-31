@@ -6,7 +6,7 @@ import API_URL from "../../api";
 export const loginCall = createAsyncThunk(
     'login/call',
     async ({ username, password }, {rejectWithValue} ) => {
-        console.log('Thunk started');
+        console.log("API_URL:", API_URL);
         try {
             const response = await axios.post(`${API_URL}/login`, {
                 username,
@@ -16,6 +16,7 @@ export const loginCall = createAsyncThunk(
             return response.data;
         } catch (e) {
             console.log('Thunk failed');
+            console.log(e)
             if (e.response) {
                 return rejectWithValue(e.response.data.msg); 
             }

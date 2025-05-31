@@ -48,7 +48,7 @@ function Login() {
       console.error('Login failed:', error);
     }
   };
-  console.log(token)
+
   return (
     <div className="formBox">
       <form className="authForm" onSubmit={handleSubmit}>

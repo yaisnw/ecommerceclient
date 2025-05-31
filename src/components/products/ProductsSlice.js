@@ -5,7 +5,7 @@ export const productsCall = createAsyncThunk(
     'products/call',
     async (token, {rejectWithValue}) => {
         try {
-            const response = await axios.get(`http://${API_URL}/products`, {
+            const response = await axios.get(`${API_URL}/products`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

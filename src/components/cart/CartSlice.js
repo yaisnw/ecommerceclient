@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { PURGE } from 'redux-persist';
+import API_URL from "../../api";
 
 export const cartCall = createAsyncThunk(
     'cart/items',
     async ({ token }) => {
         try {
-            const response = await axios.get('http://localhost:4000/cart', {
+            const response = await axios.get(`http://${API_URL}/cart`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -24,7 +25,7 @@ export const checkout = createAsyncThunk(
     'cart/checkout',
     async (token) => {
         try {
-            const response = await axios.post('http://localhost:4000/cart/checkout', {}, {
+            const response = await axios.post(`http://${API_URL}/cart/checkout`, {}, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -41,7 +42,7 @@ export const updateQuantity = createAsyncThunk(
     'cart/quantity',
     async ({ id, quantity, token }) => {
         try {
-            const response = await axios.put(`http://localhost:4000/cart/item/${id}`, {
+            const response = await axios.put(`http://${API_URL}/cart/item/${id}`, {
                 quantity: quantity
             },
                 {
@@ -62,7 +63,7 @@ export const deleteItem = createAsyncThunk(
     'cart/delete',
     async ({ id, token }) => {
         try {
-            const response = await axios.delete(`http://localhost:4000/cart/item/${id}`, {
+            const response = await axios.delete(`http://${API_URL}/cart/item/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

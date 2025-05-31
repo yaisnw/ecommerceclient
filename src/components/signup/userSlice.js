@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { PURGE } from "redux-persist";
+import API_URL from "../../api";
 
 export const signup = createAsyncThunk(
   'user/signup',
   async ({ username, password }, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:4000/accounts/signup', {
+      const response = await axios.post(`http://${API_URL}/accounts/signup`, {
         username,
         password
       });

@@ -10,6 +10,7 @@ import Cart from './components/cart/Cart';
 import { PersistGate } from 'redux-persist/integration/react';
 import Nav from './components/nav/Navbar';
 
+
 const router = createBrowserRouter(createRoutesFromElements(
   <Route path="/" >
     <Route path="signup" element={< Signup />} />

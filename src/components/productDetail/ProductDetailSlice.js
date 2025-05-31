@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import API_URL from "../../api";
 
 export const getProductById = createAsyncThunk(
     'productDetail/productbyid',
     async ({ id, token }) => {
         try {
-            const response = await axios.get(`http://localhost:4000/products/${id}`, {
+            const response = await axios.get(`${API_URL}/products/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -23,7 +24,7 @@ export const addToCart = createAsyncThunk(
     'productDetail/addtocart',
     async ({ id, quantity, token }) => {
         try {
-            await axios.post('http://localhost:4000/cart/item', {
+            await axios.post(`${API_URL}/cart/item`, {
                 product_id: id,
                 quantity: quantity
             }, {
@@ -45,7 +46,7 @@ export const getFilteredProducts = createAsyncThunk(
     'productDetail/getFilteredProducts',
     async ({id, category, token }, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`http://localhost:4000/products/category?category=${category}&id=${id}`, {
+            const response = await axios.get(`${API_URL}/products/category?category=${category}&id=${id}`, {
                 withCredentials: true,
                 headers: {
                     'Authorization': `Bearer ${token}`

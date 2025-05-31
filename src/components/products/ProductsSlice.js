@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import API_URL from "../../api";
 export const productsCall = createAsyncThunk(
     'products/call',
     async (token, {rejectWithValue}) => {
         try {
-            const response = await axios.get('http://localhost:4000/products', {
+            const response = await axios.get(`http://${API_URL}/products`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
